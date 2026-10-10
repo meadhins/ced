@@ -96,7 +96,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        padding-bottom: max(16px, env(safe-area-inset-bottom));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
       }
 
       /* Header */
@@ -175,25 +175,15 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 12px 16px;
-      }
-
-      .needle-hint {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 11px;
-        color: var(--text-secondary);
-        margin-bottom: 8px;
-        opacity: 0.85;
+        padding: 16px;
       }
 
       /* 3-Layer Performance Dial Container */
       .dial-container {
-        width: min(84vw, 45vh, 370px);
-        height: min(84vw, 45vh, 370px);
-        max-width: 370px;
-        max-height: 370px;
+        width: min(86vw, 48vh, 380px);
+        height: min(86vw, 48vh, 380px);
+        max-width: 380px;
+        max-height: 380px;
         aspect-ratio: 1 / 1;
         position: relative;
         margin: 0 auto;
@@ -231,46 +221,6 @@
         cursor: grabbing;
       }
 
-      /* Status Info Row */
-      .status-row {
-        width: 100%;
-        max-width: 340px;
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 11.5px;
-      }
-
-      .status-indicator {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .pulse-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background-color: var(--text-muted);
-        transition: background-color 0.2s ease;
-      }
-
-      .pulse-dot.running-odd {
-        background-color: var(--brand-orange);
-        box-shadow: 0 0 8px var(--brand-orange);
-      }
-
-      .pulse-dot.running-even {
-        background-color: var(--brand-amber);
-        box-shadow: 0 0 8px var(--brand-amber);
-      }
-
-      .status-target {
-        color: var(--text-secondary);
-        font-size: 11px;
-      }
-
       /* Control Dock (Bottom) */
       .control-dock {
         width: 100%;
@@ -282,50 +232,6 @@
         gap: 12px;
       }
 
-      /* Stepper Bar */
-      .stepper-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: var(--control-bar-bg);
-        border: 1px solid var(--control-bar-border);
-        border-radius: 14px;
-        padding: 4px;
-      }
-
-      .stepper-btn {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        background: transparent;
-        color: var(--text-secondary);
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.15s ease;
-      }
-
-      .stepper-btn:hover:not(:disabled) {
-        background: var(--bg-surface);
-        color: var(--text-primary);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-      }
-
-      .stepper-btn:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-      }
-
-      .stepper-label {
-        font-size: 13px;
-        font-weight: 700;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        letter-spacing: 0.04em;
-      }
-
       /* Primary Action Buttons */
       .primary-actions {
         display: flex;
@@ -335,14 +241,14 @@
 
       .btn-start {
         flex: 1;
-        min-height: 48px;
-        border-radius: 14px;
+        min-height: 52px;
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
         border: none;
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 600;
         color: #ffffff;
         background: var(--brand-orange);
@@ -365,9 +271,9 @@
       }
 
       .btn-reset {
-        min-height: 48px;
-        padding: 0 16px;
-        border-radius: 14px;
+        min-height: 52px;
+        padding: 0 20px;
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -375,7 +281,7 @@
         border: 1px solid var(--btn-secondary-border);
         background: var(--btn-secondary-bg);
         color: var(--text-secondary);
-        font-size: 13px;
+        font-size: 13.5px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.15s ease;
@@ -391,7 +297,7 @@
         cursor: not-allowed;
       }
 
-      /* Modals */
+      /* Settings Modal */
       .modal-backdrop {
         position: fixed;
         inset: 0;
@@ -433,7 +339,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 16px;
+        margin-bottom: 12px;
       }
 
       .modal-title {
@@ -454,11 +360,70 @@
         justify-content: center;
       }
 
+      .custom-sec-wrapper {
+        margin: 16px 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .custom-input-box {
+        flex: 1;
+        position: relative;
+      }
+
+      .custom-sec-input {
+        width: 100%;
+        height: 44px;
+        padding: 0 44px 0 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        background: var(--control-bar-bg);
+        color: var(--text-primary);
+        font-size: 16px;
+        font-weight: 700;
+        font-family: ui-monospace, SFMono-Regular, monospace;
+        outline: none;
+        transition: border-color 0.15s ease;
+      }
+
+      .custom-sec-input:focus {
+        border-color: var(--brand-orange);
+      }
+
+      .custom-input-unit {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: 600;
+        pointer-events: none;
+      }
+
+      .btn-set-custom {
+        height: 44px;
+        padding: 0 18px;
+        border-radius: 12px;
+        border: none;
+        background: var(--brand-orange);
+        color: #ffffff;
+        font-size: 13.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.15s ease;
+      }
+
+      .btn-set-custom:hover {
+        opacity: 0.9;
+      }
+
       .presets-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 8px;
-        margin-top: 12px;
+        margin-top: 10px;
       }
 
       .preset-card {
@@ -502,7 +467,7 @@
       <header>
         <div style="display: flex; align-items: center;">
           <span class="brand-title">Cadence</span>
-          <span id="header-duration-label" class="brand-duration">· 180s</span>
+          <span id="header-duration-label" class="brand-duration">· 130s</span>
         </div>
 
         <div class="action-tools">
@@ -528,21 +493,11 @@
             <svg id="theme-icon-sun" class="hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #fbbf24;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             <span id="theme-label">Dark</span>
           </button>
-
-          <!-- Info Guide -->
-          <button id="btn-open-info" class="tool-btn" title="Information guide" aria-label="Info guide">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          </button>
         </div>
       </header>
 
       <!-- Main Dial Instrument Center -->
       <main>
-        <div class="needle-hint">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--brand-orange)" stroke-width="2"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
-          <span>Touch needle to manually adjust position</span>
-        </div>
-
         <!-- Dial Container with 3 Dedicated Layers -->
         <div class="dial-container" id="dial-container">
           <!-- Layer 1: Static Dial (Never repainted during drag) -->
@@ -591,11 +546,11 @@
             <circle cx="200" cy="362" r="1.5" fill="#94a3b8" />
             <circle cx="38" cy="200" r="1.5" fill="#94a3b8" />
 
-            <!-- Center Revolution Counter Badge -->
+            <!-- Center Revolution Counter Badge (Enlarged for effortless readability from distance) -->
             <g id="rev-counter-group" pointer-events="none">
-              <rect id="badge-rect" x="142" y="108" width="116" height="58" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
-              <text id="display-rev-number" x="200" y="141" text-anchor="middle" fill="#0f172a" font-size="29" font-weight="700" font-family="ui-monospace, monospace">1</text>
-              <text id="display-pace-label" x="200" y="156" text-anchor="middle" fill="#ea580c" font-size="8.5" font-weight="700" letter-spacing="0.1em">ODD · 40% PACE</text>
+              <rect id="badge-rect" x="132" y="96" width="136" height="76" rx="18" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+              <text id="display-rev-number" x="200" y="146" text-anchor="middle" fill="#0f172a" font-size="46" font-weight="800" font-family="ui-monospace, monospace">1</text>
+              <text id="display-pace-label" x="200" y="163" text-anchor="middle" fill="#ea580c" font-size="9" font-weight="700" letter-spacing="0.12em">ODD · 40% PACE</text>
             </g>
           </svg>
 
@@ -631,36 +586,20 @@
             </g>
           </svg>
         </div>
-
-        <!-- Status Row -->
-        <div class="status-row">
-          <div class="status-indicator">
-            <span id="pulse-dot" class="pulse-dot"></span>
-            <span id="status-phase-text" style="font-weight: 600;">Rev 1 (Odd · 40% pace)</span>
-          </div>
-          <span id="status-target-text" class="status-target">Target: ~72s per rev</span>
-        </div>
       </main>
 
       <!-- Bottom Control Dock -->
       <footer class="control-dock">
-        <!-- Revolution Stepper Bar -->
-        <div class="stepper-bar">
-          <button id="btn-decrement-rev" class="stepper-btn" aria-label="Previous revolution" title="Previous revolution">−</button>
-          <span id="stepper-rev-display" class="stepper-label">Rev 1</span>
-          <button id="btn-increment-rev" class="stepper-btn" aria-label="Next revolution" title="Next revolution">+</button>
-        </div>
-
         <!-- Start / Stop and Reset Actions -->
         <div class="primary-actions">
           <button id="btn-start-stop" class="btn-start" aria-label="Start Cadence">
-            <svg id="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <svg id="icon-stop" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+            <svg id="icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <svg id="icon-stop" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
             <span id="start-stop-label">Start</span>
           </button>
 
           <button id="btn-reset" class="btn-reset" aria-label="Reset chronometer">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
             <span>Reset</span>
           </button>
         </div>
@@ -675,21 +614,35 @@
           <button id="btn-close-settings" class="modal-close" aria-label="Close">✕</button>
         </div>
         <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.45;">
-          Set total time for two full revolutions (one 40% odd cycle and one 60% even cycle).
+          Set total duration in seconds for two full revolutions (one 40% odd cycle and one 60% even cycle).
         </p>
 
+        <!-- Custom Seconds Input -->
+        <div class="custom-sec-wrapper">
+          <div class="custom-input-box">
+            <input type="number" id="input-custom-sec" min="10" max="3600" step="1" value="130" placeholder="130" class="custom-sec-input" />
+            <span class="custom-input-unit">sec</span>
+          </div>
+          <button id="btn-apply-custom-sec" class="btn-set-custom">Set</button>
+        </div>
+
+        <!-- Preset Options -->
         <div class="presets-grid">
-          <div class="preset-card active" data-sec="180">
-            <div class="preset-sec">180s</div>
-            <div class="preset-desc">3 min (Standard)</div>
+          <div class="preset-card active" data-sec="130">
+            <div class="preset-sec">130s</div>
+            <div class="preset-desc">Standard</div>
           </div>
           <div class="preset-card" data-sec="120">
             <div class="preset-sec">120s</div>
             <div class="preset-desc">2 min (Brisk)</div>
           </div>
+          <div class="preset-card" data-sec="180">
+            <div class="preset-sec">180s</div>
+            <div class="preset-desc">3 min</div>
+          </div>
           <div class="preset-card" data-sec="240">
             <div class="preset-sec">240s</div>
-            <div class="preset-desc">4 min (Meditative)</div>
+            <div class="preset-desc">4 min</div>
           </div>
           <div class="preset-card" data-sec="90">
             <div class="preset-sec">90s</div>
@@ -699,31 +652,6 @@
             <div class="preset-sec">300s</div>
             <div class="preset-desc">5 min</div>
           </div>
-          <div class="preset-card" data-sec="360">
-            <div class="preset-sec">360s</div>
-            <div class="preset-desc">6 min</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Info Guide Modal -->
-    <div id="modal-info" class="modal-backdrop">
-      <div class="modal-card">
-        <div class="modal-header">
-          <span class="modal-title">Nafl Salah Timing Aid</span>
-          <button id="btn-close-info" class="modal-close" aria-label="Close">✕</button>
-        </div>
-        <div style="font-size: 13px; line-height: 1.55; color: var(--text-secondary); display: flex; flex-direction: column; gap: 10px;">
-          <p>
-            <strong>Odd Cycles (1, 3, 5, 7) — 40% Pace:</strong> Standing (Qiyam), Ruku, and two Sujuds without Tashahhud.
-          </p>
-          <p>
-            <strong>Even Cycles (2, 4, 6, 8) — 60% Pace:</strong> Standing, Ruku, two Sujuds, plus <strong>sitting for Tashahhud</strong>.
-          </p>
-          <p>
-            <strong>Needle Grab:</strong> Touch and hold the clock hand directly to adjust its angle. Moving across 12 o'clock automatically steps the revolution counter.
-          </p>
         </div>
       </div>
     </div>
@@ -731,11 +659,13 @@
     <!-- High-Performance 60FPS Drag & Render Logic -->
     <script>
       (function() {
-        const DEFAULT_TOTAL_SEC = 180;
+        const DEFAULT_TOTAL_SEC = 130;
         const ODD_RATIO = 0.40;
         const EVEN_RATIO = 0.60;
 
-        let twoRevTotalSec = parseInt(localStorage.getItem('cadence_two_rev_total'), 10) || DEFAULT_TOTAL_SEC;
+        let savedSec = parseInt(localStorage.getItem('cadence_two_rev_total'), 10);
+        // Default to 130s (resetting previous default of 180s if uncustomized)
+        let twoRevTotalSec = (savedSec && savedSec !== 180) ? savedSec : DEFAULT_TOTAL_SEC;
         let revNumber = 1;
         let handAngleDegrees = 0;
         let isRunning = false;
@@ -773,14 +703,7 @@
         const hubDot = document.getElementById('hub-dot');
         const dragHalo = document.getElementById('drag-halo');
 
-        const pulseDot = document.getElementById('pulse-dot');
-        const statusPhaseText = document.getElementById('status-phase-text');
-        const statusTargetText = document.getElementById('status-target-text');
         const headerDurationLabel = document.getElementById('header-duration-label');
-
-        const btnDecrementRev = document.getElementById('btn-decrement-rev');
-        const stepperRevDisplay = document.getElementById('stepper-rev-display');
-        const btnIncrementRev = document.getElementById('btn-increment-rev');
 
         const btnStartStop = document.getElementById('btn-start-stop');
         const startStopLabel = document.getElementById('start-stop-label');
@@ -802,10 +725,8 @@
         const btnOpenSettings = document.getElementById('btn-open-settings');
         const btnCloseSettings = document.getElementById('btn-close-settings');
         const presetCards = document.querySelectorAll('.preset-card');
-
-        const modalInfo = document.getElementById('modal-info');
-        const btnOpenInfo = document.getElementById('btn-open-info');
-        const btnCloseInfo = document.getElementById('btn-close-info');
+        const inputCustomSec = document.getElementById('input-custom-sec');
+        const btnApplyCustomSec = document.getElementById('btn-apply-custom-sec');
 
         // Geometry Helpers
         function polarToCartesian(cx, cy, r, angleDeg) {
@@ -953,7 +874,6 @@
         function updateRevUI() {
           const isOdd = (revNumber % 2 !== 0);
           const paceColor = isOdd ? '#ea580c' : '#d97706';
-          const activeDurationSec = Math.round(isOdd ? twoRevTotalSec * ODD_RATIO : twoRevTotalSec * EVEN_RATIO);
 
           needleBlade.setAttribute('stroke', paceColor);
           if (needleArrow) needleArrow.setAttribute('fill', paceColor);
@@ -966,28 +886,28 @@
           displayPaceLabel.textContent = isOdd ? 'ODD · 40% PACE' : 'EVEN · 60% PACE';
           displayPaceLabel.setAttribute('fill', paceColor);
 
-          stepperRevDisplay.textContent = `Rev ${revNumber}`;
-          statusPhaseText.textContent = `Rev ${revNumber} (${isOdd ? 'Odd · 40%' : 'Even · 60%'} pace)`;
-          statusTargetText.textContent = isRunning ? `Target: ~${activeDurationSec}s per rev` : 'Touch needle to position';
-
-          if (isRunning) {
-            pulseDot.className = 'pulse-dot ' + (isOdd ? 'running-odd' : 'running-even');
-          } else {
-            pulseDot.className = 'pulse-dot';
-          }
-
-          btnDecrementRev.disabled = (revNumber <= 1);
           btnReset.disabled = (handAngleDegrees === 0 && revNumber === 1 && !isRunning);
         }
 
         function updateFullUI() {
           updateRevUI();
           headerDurationLabel.textContent = `· ${twoRevTotalSec}s`;
+          if (inputCustomSec) inputCustomSec.value = twoRevTotalSec;
 
           presetCards.forEach((card) => {
             const sec = parseInt(card.dataset.sec, 10);
             card.classList.toggle('active', sec === twoRevTotalSec);
           });
+        }
+
+        function setDurationSec(newSec) {
+          if (!isNaN(newSec) && newSec >= 10 && newSec <= 3600) {
+            twoRevTotalSec = Math.round(newSec);
+            localStorage.setItem('cadence_two_rev_total', twoRevTotalSec.toString());
+            updateFullUI();
+            renderHandAndArc();
+            closeSettingsModal();
+          }
         }
 
         // --- Animation Loop ---
@@ -1037,11 +957,25 @@
           }
         }
 
+        // Fullscreen launcher helper
+        function tryAutoFullscreen() {
+          try {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+              const docEl = document.documentElement;
+              const req = docEl.requestFullscreen || docEl.webkitRequestFullscreen;
+              if (req) {
+                req.call(docEl).catch(() => {});
+              }
+            }
+          } catch (err) {}
+        }
+
         function startLoop() {
           if (isRunning) return;
           isRunning = true;
           lastTimestamp = performance.now();
           requestWakeLock();
+          tryAutoFullscreen();
           btnStartStop.classList.add('running');
           startStopLabel.textContent = 'Stop';
           iconPlay.classList.add('hidden');
@@ -1092,7 +1026,7 @@
           dialHandSvg.classList.add('dragging');
           isDragging = true;
 
-          // Cache center coordinates ONCE at start of gesture (No getBoundingClientRect inside pointermove)
+          // Cache center coordinates ONCE at start of gesture
           const rect = dialContainer.getBoundingClientRect();
           cachedCenterX = rect.left + rect.width / 2;
           cachedCenterY = rect.top + rect.height / 2;
@@ -1155,18 +1089,6 @@
 
         btnReset.addEventListener('click', resetChronometer);
 
-        btnIncrementRev.addEventListener('click', () => {
-          revNumber += 1;
-          updateRevUI();
-          renderHandAndArc();
-        });
-
-        btnDecrementRev.addEventListener('click', () => {
-          revNumber = Math.max(1, revNumber - 1);
-          updateRevUI();
-          renderHandAndArc();
-        });
-
         btnToggleArc.addEventListener('click', () => {
           showSweepArc = !showSweepArc;
           arcTrackBg.style.display = showSweepArc ? 'block' : 'none';
@@ -1174,7 +1096,7 @@
           renderHandAndArc();
         });
 
-        // Fullscreen
+        // Fullscreen manual toggle
         function toggleFullscreen() {
           try {
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
@@ -1200,7 +1122,10 @@
         document.addEventListener('webkitfullscreenchange', syncFullscreenIcons);
 
         // Settings Modal
-        function openSettingsModal() { modalSettings.classList.add('open'); }
+        function openSettingsModal() {
+          if (inputCustomSec) inputCustomSec.value = twoRevTotalSec;
+          modalSettings.classList.add('open');
+        }
         function closeSettingsModal() { modalSettings.classList.remove('open'); }
 
         btnOpenSettings.addEventListener('click', openSettingsModal);
@@ -1212,25 +1137,22 @@
         presetCards.forEach((card) => {
           card.addEventListener('click', () => {
             const sec = parseInt(card.dataset.sec, 10);
-            if (!isNaN(sec) && sec > 0) {
-              twoRevTotalSec = sec;
-              localStorage.setItem('cadence_two_rev_total', sec.toString());
-              updateFullUI();
-              renderHandAndArc();
-              closeSettingsModal();
-            }
+            setDurationSec(sec);
           });
         });
 
-        // Info Modal
-        function openInfoModal() { modalInfo.classList.add('open'); }
-        function closeInfoModal() { modalInfo.classList.remove('open'); }
-
-        btnOpenInfo.addEventListener('click', openInfoModal);
-        btnCloseInfo.addEventListener('click', closeInfoModal);
-        modalInfo.addEventListener('click', (e) => {
-          if (e.target === modalInfo) closeInfoModal();
-        });
+        if (btnApplyCustomSec && inputCustomSec) {
+          btnApplyCustomSec.addEventListener('click', () => {
+            const val = parseInt(inputCustomSec.value, 10);
+            setDurationSec(val);
+          });
+          inputCustomSec.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              const val = parseInt(inputCustomSec.value, 10);
+              setDurationSec(val);
+            }
+          });
+        }
 
         document.addEventListener('visibilitychange', () => {
           if (document.visibilityState === 'visible' && isRunning) {

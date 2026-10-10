@@ -84,7 +84,6 @@
         user-select: none;
         -webkit-user-select: none;
         -webkit-tap-highlight-color: transparent;
-        transition: background-color 0.25s ease, color 0.25s ease;
       }
 
       /* App Shell */
@@ -189,7 +188,7 @@
         opacity: 0.85;
       }
 
-      /* Bulletproof Dial Container Dimensions */
+      /* 3-Layer Performance Dial Container */
       .dial-container {
         width: min(84vw, 45vh, 370px);
         height: min(84vw, 45vh, 370px);
@@ -198,23 +197,37 @@
         aspect-ratio: 1 / 1;
         position: relative;
         margin: 0 auto;
-        filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.08));
+        border-radius: 50%;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
       }
 
-      #dial-svg {
+      .dial-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         display: block;
-        overflow: visible;
       }
 
-      #instrument-hand {
+      .dial-static-layer {
+        pointer-events: none;
+      }
+
+      .dial-arc-layer {
+        pointer-events: none;
+      }
+
+      .dial-hand-layer {
         cursor: grab;
         touch-action: none;
+        transform: rotate(0deg);
+        transform-origin: 50% 50%;
+        will-change: transform;
       }
 
-      #instrument-hand:active,
-      #instrument-hand.dragging {
+      .dial-hand-layer:active,
+      .dial-hand-layer.dragging {
         cursor: grabbing;
       }
 
@@ -383,7 +396,6 @@
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.55);
-        backdrop-filter: blur(4px);
         display: flex;
         align-items: flex-end;
         justify-content: center;
@@ -396,6 +408,8 @@
       .modal-backdrop.open {
         opacity: 1;
         pointer-events: auto;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
       }
 
       .modal-card {
@@ -529,8 +543,10 @@
           <span>Touch needle to manually adjust position</span>
         </div>
 
-        <div class="dial-container">
-          <svg id="dial-svg" viewBox="0 0 400 400" role="img" aria-label="Cadence dial instrument">
+        <!-- Dial Container with 3 Dedicated Layers -->
+        <div class="dial-container" id="dial-container">
+          <!-- Layer 1: Static Dial (Never repainted during drag) -->
+          <svg id="dial-static-svg" class="dial-layer dial-static-layer" viewBox="0 0 400 400" role="img" aria-label="Cadence dial instrument">
             <defs>
               <radialGradient id="bezelGradientLight" cx="50%" cy="45%" r="50%">
                 <stop offset="65%" stop-color="#f8fafc" />
@@ -552,9 +568,6 @@
                 <stop offset="85%" stop-color="#090d16" />
                 <stop offset="100%" stop-color="#05080e" />
               </radialGradient>
-              <filter id="handShadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="2.5" stdDeviation="3" flood-opacity="0.25" flood-color="#000000" />
-              </filter>
             </defs>
 
             <!-- Outer Bezel -->
@@ -565,8 +578,6 @@
             <circle id="dial-guide-outer" cx="200" cy="200" r="176" fill="none" stroke="#f1f5f9" stroke-width="1" />
             <!-- Swept Arc Track (background dotted path) -->
             <circle id="arc-track-bg" cx="200" cy="200" r="142" fill="none" stroke="rgba(15, 23, 42, 0.06)" stroke-width="3.5" stroke-dasharray="2 3" />
-            <!-- Swept Arc Progress Path -->
-            <path id="arc-progress-path" d="" fill="none" stroke="#ea580c" stroke-width="3.5" stroke-linecap="round" opacity="0.85" />
             <!-- Concentric Inner Guide Ring -->
             <circle id="dial-guide-inner" cx="200" cy="200" r="115" fill="none" stroke="#f1f5f9" stroke-width="1" />
 
@@ -586,27 +597,32 @@
               <text id="display-rev-number" x="200" y="141" text-anchor="middle" fill="#0f172a" font-size="29" font-weight="700" font-family="ui-monospace, monospace">1</text>
               <text id="display-pace-label" x="200" y="156" text-anchor="middle" fill="#ea580c" font-size="8.5" font-weight="700" letter-spacing="0.1em">ODD · 40% PACE</text>
             </g>
+          </svg>
 
-            <!-- The Clock Hand (Touch Interaction Exclusively on this Group) -->
-            <g id="instrument-hand" style="transform: rotate(0deg); transform-origin: 200px 200px;">
+          <!-- Layer 2: Swept Arc Path (Isolated middle layer) -->
+          <svg id="dial-arc-svg" class="dial-layer dial-arc-layer" viewBox="0 0 400 400" pointer-events="none">
+            <path id="arc-progress-path" d="" fill="none" stroke="#ea580c" stroke-width="3.5" stroke-linecap="round" opacity="0.85" />
+          </svg>
+
+          <!-- Layer 3: Hand Layer (Rotated as entire SVG element via GPU transform) -->
+          <svg id="dial-hand-svg" class="dial-layer dial-hand-layer" viewBox="0 0 400 400">
+            <g id="instrument-hand">
               <!-- Invisible enlarged grab area -->
-              <line x1="200" y1="200" x2="200" y2="40" stroke="transparent" stroke-width="36" stroke-linecap="round" />
-              <circle cx="200" cy="40" r="26" fill="transparent" />
+              <line x1="200" y1="200" x2="200" y2="40" stroke="transparent" stroke-width="40" stroke-linecap="round" />
+              <circle cx="200" cy="40" r="28" fill="transparent" />
 
-              <g filter="url(#handShadow)">
-                <!-- Counterweight Tail -->
-                <line x1="200" y1="200" x2="200" y2="228" stroke="#475569" stroke-width="2.5" stroke-linecap="round" />
-                <circle cx="200" cy="228" r="3.5" fill="#475569" />
+              <!-- Counterweight Tail -->
+              <line x1="200" y1="200" x2="200" y2="228" stroke="#475569" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="200" cy="228" r="3.5" fill="#475569" />
 
-                <!-- Needle Blade -->
-                <line id="needle-blade" x1="200" y1="200" x2="200" y2="44" stroke="#ea580c" stroke-width="2.75" stroke-linecap="round" />
-                <!-- Sharp Arrow Point -->
-                <polygon points="197,50 200,38 203,50" fill="#ea580c" />
-                <!-- Needle Grab Halo Ring -->
-                <circle id="drag-halo" cx="200" cy="42" r="14" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="2 2" opacity="0" />
-                <!-- Needle Tip Grab Dot -->
-                <circle id="needle-tip" cx="200" cy="42" r="4.5" fill="#ea580c" />
-              </g>
+              <!-- Needle Blade -->
+              <line id="needle-blade" x1="200" y1="200" x2="200" y2="44" stroke="#ea580c" stroke-width="2.75" stroke-linecap="round" />
+              <!-- Sharp Arrow Point -->
+              <polygon id="needle-arrow" points="197,50 200,38 203,50" fill="#ea580c" />
+              <!-- Needle Grab Halo Ring -->
+              <circle id="drag-halo" cx="200" cy="42" r="14" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="2 2" opacity="0" />
+              <!-- Needle Tip Grab Dot -->
+              <circle id="needle-tip" cx="200" cy="42" r="4.5" fill="#ea580c" />
 
               <!-- Central Pivot Hub -->
               <circle id="hub-outer" cx="200" cy="200" r="10" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.5" />
@@ -712,7 +728,7 @@
       </div>
     </div>
 
-    <!-- JavaScript Application Logic -->
+    <!-- High-Performance 60FPS Drag & Render Logic -->
     <script>
       (function() {
         const DEFAULT_TOTAL_SEC = 180;
@@ -730,8 +746,13 @@
         let animFrameId = null;
         let wakeLock = null;
 
+        // Cached drag geometry
+        let cachedCenterX = 0;
+        let cachedCenterY = 0;
+        let dragRafScheduled = false;
+
         // Elements
-        const dialSvg = document.getElementById('dial-svg');
+        const dialContainer = document.getElementById('dial-container');
         const dialBezel = document.getElementById('dial-bezel');
         const dialFace = document.getElementById('dial-face');
         const dialGuideOuter = document.getElementById('dial-guide-outer');
@@ -743,8 +764,9 @@
         const displayRevNumber = document.getElementById('display-rev-number');
         const displayPaceLabel = document.getElementById('display-pace-label');
 
-        const handGroup = document.getElementById('instrument-hand');
+        const dialHandSvg = document.getElementById('dial-hand-svg');
         const needleBlade = document.getElementById('needle-blade');
+        const needleArrow = document.getElementById('needle-arrow');
         const needleTip = document.getElementById('needle-tip');
         const hubOuter = document.getElementById('hub-outer');
         const hubInner = document.getElementById('hub-inner');
@@ -785,7 +807,7 @@
         const btnOpenInfo = document.getElementById('btn-open-info');
         const btnCloseInfo = document.getElementById('btn-close-info');
 
-        // Math Helpers
+        // Geometry Helpers
         function polarToCartesian(cx, cy, r, angleDeg) {
           const rad = (angleDeg - 90) * Math.PI / 180;
           return {
@@ -804,7 +826,7 @@
           return ['M', start.x, start.y, 'A', radius, radius, 0, largeArcFlag, 1, end.x, end.y].join(' ');
         }
 
-        // --- Theme Management (Light by default) ---
+        // --- Theme Management ---
         let currentTheme = localStorage.getItem('cadence_theme') || 'light';
         if (currentTheme !== 'light' && currentTheme !== 'dark') currentTheme = 'light';
 
@@ -854,14 +876,15 @@
           }
 
           renderTicks();
-          updateUI();
+          updateRevUI();
+          renderHandAndArc();
         }
 
         btnToggleTheme.addEventListener('click', () => {
           applyTheme(currentTheme === 'light' ? 'dark' : 'light');
         });
 
-        // 60 Tick Marks
+        // 60 Tick Marks (Rendered once per theme switch)
         function renderTicks() {
           ticksGroup.innerHTML = '';
           const cx = 200, cy = 200, outerR = 176;
@@ -913,34 +936,36 @@
           }
         }
 
-        // --- Update UI ---
-        function updateUI() {
+        // --- Fast Render: Hand rotation & Arc ONLY (Zero DOM/text rebuild) ---
+        function renderHandAndArc() {
+          dragRafScheduled = false;
+          dialHandSvg.style.transform = `rotate(${handAngleDegrees}deg)`;
+
+          if (showSweepArc && handAngleDegrees > 0.1) {
+            arcProgressPath.style.display = 'block';
+            arcProgressPath.setAttribute('d', describeArc(200, 200, 142, 0, Math.min(handAngleDegrees, 359.9)));
+          } else {
+            arcProgressPath.style.display = 'none';
+          }
+        }
+
+        // --- Revolution State UI: Called ONLY when rev number changes or drag ends ---
+        function updateRevUI() {
           const isOdd = (revNumber % 2 !== 0);
           const paceColor = isOdd ? '#ea580c' : '#d97706';
           const activeDurationSec = Math.round(isOdd ? twoRevTotalSec * ODD_RATIO : twoRevTotalSec * EVEN_RATIO);
 
-          // Rotate Hand
-          handGroup.style.transform = `rotate(${handAngleDegrees}deg)`;
           needleBlade.setAttribute('stroke', paceColor);
+          if (needleArrow) needleArrow.setAttribute('fill', paceColor);
           needleTip.setAttribute('fill', paceColor);
           hubDot.setAttribute('fill', paceColor);
           dragHalo.setAttribute('stroke', paceColor);
+          arcProgressPath.setAttribute('stroke', paceColor);
 
-          // Center Badge
           displayRevNumber.textContent = revNumber;
           displayPaceLabel.textContent = isOdd ? 'ODD · 40% PACE' : 'EVEN · 60% PACE';
           displayPaceLabel.setAttribute('fill', paceColor);
 
-          // Swept Arc
-          if (showSweepArc && handAngleDegrees > 0.1) {
-            arcProgressPath.style.display = 'block';
-            arcProgressPath.setAttribute('d', describeArc(200, 200, 142, 0, Math.min(handAngleDegrees, 359.9)));
-            arcProgressPath.setAttribute('stroke', paceColor);
-          } else {
-            arcProgressPath.style.display = 'none';
-          }
-
-          // Stepper & Status
           stepperRevDisplay.textContent = `Rev ${revNumber}`;
           statusPhaseText.textContent = `Rev ${revNumber} (${isOdd ? 'Odd · 40%' : 'Even · 60%'} pace)`;
           statusTargetText.textContent = isRunning ? `Target: ~${activeDurationSec}s per rev` : 'Touch needle to position';
@@ -953,9 +978,12 @@
 
           btnDecrementRev.disabled = (revNumber <= 1);
           btnReset.disabled = (handAngleDegrees === 0 && revNumber === 1 && !isRunning);
+        }
+
+        function updateFullUI() {
+          updateRevUI();
           headerDurationLabel.textContent = `· ${twoRevTotalSec}s`;
 
-          // Preset cards selection
           presetCards.forEach((card) => {
             const sec = parseInt(card.dataset.sec, 10);
             card.classList.toggle('active', sec === twoRevTotalSec);
@@ -975,14 +1003,20 @@
             const cycleDurationSec = isOdd ? twoRevTotalSec * ODD_RATIO : twoRevTotalSec * EVEN_RATIO;
             const degPerMs = 360 / (cycleDurationSec * 1000);
             let nextAngle = handAngleDegrees + degPerMs * deltaMs;
+            let revChanged = false;
 
             if (nextAngle >= 360) {
               nextAngle = nextAngle % 360;
               revNumber += 1;
+              revChanged = true;
             }
 
             handAngleDegrees = nextAngle;
-            updateUI();
+            renderHandAndArc();
+
+            if (revChanged) {
+              updateRevUI();
+            }
           }
 
           animFrameId = requestAnimationFrame(tick);
@@ -1013,7 +1047,7 @@
           iconPlay.classList.add('hidden');
           iconStop.classList.remove('hidden');
           animFrameId = requestAnimationFrame(tick);
-          updateUI();
+          updateFullUI();
         }
 
         function stopLoop() {
@@ -1029,23 +1063,21 @@
           startStopLabel.textContent = 'Start';
           iconPlay.classList.remove('hidden');
           iconStop.classList.add('hidden');
-          updateUI();
+          updateFullUI();
         }
 
         function resetChronometer() {
           stopLoop();
           handAngleDegrees = 0;
           revNumber = 1;
-          updateUI();
+          renderHandAndArc();
+          updateFullUI();
         }
 
-        // --- Touch Dragging ONLY on Hand ---
-        function getAngleFromPointer(e) {
-          const rect = dialSvg.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const dx = e.clientX - cx;
-          const dy = e.clientY - cy;
+        // --- High-Performance Cached Angle Math ---
+        function getAngleFromCoords(clientX, clientY) {
+          const dx = clientX - cachedCenterX;
+          const dy = clientY - cachedCenterY;
           let deg = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
           if (deg < 0) deg += 360;
           return deg % 360;
@@ -1054,43 +1086,66 @@
         function onHandPointerDown(e) {
           e.stopPropagation();
           try {
-            handGroup.setPointerCapture(e.pointerId);
+            dialHandSvg.setPointerCapture(e.pointerId);
           } catch (err) {}
-          handGroup.classList.add('dragging');
+
+          dialHandSvg.classList.add('dragging');
           isDragging = true;
-          lastDragAngle = getAngleFromPointer(e);
+
+          // Cache center coordinates ONCE at start of gesture (No getBoundingClientRect inside pointermove)
+          const rect = dialContainer.getBoundingClientRect();
+          cachedCenterX = rect.left + rect.width / 2;
+          cachedCenterY = rect.top + rect.height / 2;
+
+          lastDragAngle = getAngleFromCoords(e.clientX, e.clientY);
           dragHalo.style.opacity = '1';
         }
 
         function onHandPointerMove(e) {
           if (!isDragging) return;
-          const currentAngle = getAngleFromPointer(e);
+          const currentAngle = getAngleFromCoords(e.clientX, e.clientY);
+
+          let revChanged = false;
           if (lastDragAngle > 270 && currentAngle < 90) {
             revNumber += 1;
+            revChanged = true;
           } else if (lastDragAngle < 90 && currentAngle > 270) {
             revNumber = Math.max(1, revNumber - 1);
+            revChanged = true;
           }
+
           lastDragAngle = currentAngle;
           handAngleDegrees = currentAngle;
-          updateUI();
+
+          if (revChanged) {
+            updateRevUI();
+          }
+
+          if (!dragRafScheduled) {
+            dragRafScheduled = true;
+            requestAnimationFrame(renderHandAndArc);
+          }
         }
 
         function onHandPointerUp(e) {
           if (!isDragging) return;
           try {
-            handGroup.releasePointerCapture(e.pointerId);
+            dialHandSvg.releasePointerCapture(e.pointerId);
           } catch (err) {}
-          handGroup.classList.remove('dragging');
+
+          dialHandSvg.classList.remove('dragging');
           isDragging = false;
           dragHalo.style.opacity = '0';
           lastTimestamp = performance.now();
-          updateUI();
+
+          renderHandAndArc();
+          updateFullUI();
         }
 
-        handGroup.addEventListener('pointerdown', onHandPointerDown);
-        handGroup.addEventListener('pointermove', onHandPointerMove);
-        handGroup.addEventListener('pointerup', onHandPointerUp);
-        handGroup.addEventListener('pointercancel', onHandPointerUp);
+        dialHandSvg.addEventListener('pointerdown', onHandPointerDown);
+        dialHandSvg.addEventListener('pointermove', onHandPointerMove);
+        dialHandSvg.addEventListener('pointerup', onHandPointerUp);
+        dialHandSvg.addEventListener('pointercancel', onHandPointerUp);
 
         // --- Button Events ---
         btnStartStop.addEventListener('click', () => {
@@ -1102,19 +1157,21 @@
 
         btnIncrementRev.addEventListener('click', () => {
           revNumber += 1;
-          updateUI();
+          updateRevUI();
+          renderHandAndArc();
         });
 
         btnDecrementRev.addEventListener('click', () => {
           revNumber = Math.max(1, revNumber - 1);
-          updateUI();
+          updateRevUI();
+          renderHandAndArc();
         });
 
         btnToggleArc.addEventListener('click', () => {
           showSweepArc = !showSweepArc;
           arcTrackBg.style.display = showSweepArc ? 'block' : 'none';
           btnToggleArc.style.color = showSweepArc ? 'var(--brand-orange)' : 'var(--text-muted)';
-          updateUI();
+          renderHandAndArc();
         });
 
         // Fullscreen
@@ -1158,7 +1215,8 @@
             if (!isNaN(sec) && sec > 0) {
               twoRevTotalSec = sec;
               localStorage.setItem('cadence_two_rev_total', sec.toString());
-              updateUI();
+              updateFullUI();
+              renderHandAndArc();
               closeSettingsModal();
             }
           });
@@ -1181,10 +1239,11 @@
           }
         });
 
-        // Initialize
+        // Initial Mount
         applyTheme(currentTheme);
         renderTicks();
-        updateUI();
+        updateFullUI();
+        renderHandAndArc();
 
         // Safe Service Worker registration
         if ('serviceWorker' in navigator && window.self === window.top) {
